@@ -1,0 +1,24 @@
+queries:
+  ExampleQuery:
+    name: exampleQuery
+    class_ref: Example
+    class_name: ExampleQuery
+    description: |
+      This is an example query.
+    fields:
+      string:
+        name: text
+      whole:
+      decimal:
+      flag:
+      date:
+      subfields:
+        flatten: true
+        fields:
+          list:
+          map:
+          set:
+          child:
+            name: example
+
+mutations:
