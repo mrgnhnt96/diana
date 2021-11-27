@@ -1,6 +1,9 @@
+import 'package:meta/meta_meta.dart';
+
 /// {@template diana}
-/// A Very Good Project created by Very Good CLI.
+///
 /// {@endtemplate}
+@Target({TargetKind.classType})
 class Diana {
   /// {@macro diana}
   const Diana();
