@@ -90,11 +90,13 @@ class Argument extends Equatable {
 
   /// the type of the argument
   String get type {
+    final type = _type.replaceAll('?', '');
+
     if (isNullable) {
-      return '$_type?';
+      return '$type?';
     }
 
-    return _type.replaceAll('?', '');
+    return type;
   }
 
   @override
