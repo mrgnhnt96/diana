@@ -1,4 +1,6 @@
+import 'package:diana/src/exceptions/reserved_keyword.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 /// {@template schema_field}
 /// The field of a Schema
@@ -10,10 +12,13 @@ class SchemaField extends Equatable {
     String? propertyName,
     this.flatten = false,
     List<SchemaField> fields = const [],
-  })  : propertyName = propertyName ?? fieldName,
+  })  : _fields = fields,
+        propertyName = propertyName ?? fieldName,
         fields = {
           for (final field in fields) field.propertyName: field,
-        };
+        } {
+    ReservedWords.checkAll([fieldName, propertyName]);
+  }
 
   /// schema field from json
   factory SchemaField.fromJson(Map<String, dynamic> json) =>
@@ -34,6 +39,12 @@ class SchemaField extends Equatable {
 
   /// The sub fields of this field, mapped by the property name
   final Map<String, SchemaField> fields;
+
+  final List<SchemaField> _fields;
+
+  /// The sub fields of this field
+  @visibleForTesting
+  List<SchemaField> get fieldsForTesting => _fields;
 
   @override
   List<Object?> get props => [
