@@ -1,4 +1,4 @@
-queries:
+mutations:
   ExampleQuery:
     graph_name: exampleQuery
     class_ref: Example
