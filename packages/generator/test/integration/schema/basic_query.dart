@@ -1,4 +1,6 @@
 import 'package:change_case/change_case.dart';
+import 'package:diana/src/domain/argument.dart';
+import 'package:diana/src/domain/argument_settings.dart';
 import 'package:diana/src/domain/schema.dart';
 import 'package:diana/src/domain/schema_field.dart';
 import 'package:diana/src/domain/schema_settings.dart';
@@ -16,6 +18,14 @@ class BasicQuery extends SchemaTest {
             description: 'This is an example query.',
             classRef: 'Example',
             className: 'ExampleQuery',
+            argumentSettings: ArgumentSettings([
+              Argument(
+                'exampleArgument',
+                type: 'String',
+                defaultValue: '"default_value"',
+                isRequired: false,
+              )
+            ]),
             fields: [
               SchemaField('string', propertyName: 'text'),
               SchemaField('whole'),
