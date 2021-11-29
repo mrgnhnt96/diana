@@ -82,7 +82,7 @@ List<Schema> _getSchemas(YamlMap? rawSchemas) {
     final rawSchema = entry.value as Map<String, dynamic>;
 
     if (!rawSchema.containsKey('fields')) {
-      throw Exception('Schema $name does not contain a fields key');
+      rawSchema['fields'] = <String, dynamic>{};
     }
 
     if (!rawSchema.containsKey('class_name')) {
