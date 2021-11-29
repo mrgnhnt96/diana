@@ -1,10 +1,14 @@
-import 'package:diana/src/domain/schema_settings.dart';
-import 'package:test/test.dart';
+import 'package:equatable/equatable.dart';
+import 'package:test/scaffolding.dart';
+
+import 'graph_input/basic.dart';
 
 void main() {
-  test('parse', () async {
-    final result = await SchemaSettings.parse('test/utils/test_graphql.yaml');
+  final tests = [
+    () => BasicGraph(),
+  ];
 
-    print(result);
-  });
+  for (final t in tests) {
+    t().verify();
+  }
 }

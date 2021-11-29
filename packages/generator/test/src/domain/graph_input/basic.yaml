@@ -1,13 +1,12 @@
 queries:
   ExampleQuery:
-    name: exampleQuery
+    graph_name: exampleQuery
     class_ref: Example
     class_name: ExampleQuery
-    description: |
-      This is an example query.
+    description: This is an example query.
     fields:
       string:
-        name: text
+        property_ref: text
       whole:
       decimal:
       flag:
@@ -19,6 +18,6 @@ queries:
           map:
           set:
           child:
-            name: example
+            property_ref: example
 
 mutations:
