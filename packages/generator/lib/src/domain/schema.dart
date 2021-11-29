@@ -1,5 +1,7 @@
 import 'package:diana/src/domain/schema_field.dart';
+import 'package:diana/src/exceptions/reserved_keyword.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 /// {@template schema}
 /// A schema retrieved from the yaml file
@@ -12,7 +14,9 @@ class Schema extends Equatable {
     required this.className,
     this.description,
     required List<SchemaField> fields,
-  }) {
+  }) : fieldsForTesting = fields {
+    ReservedWords.checkAll([graphName, className]);
+
     final flattenedFields =
         fields.fold<List<SchemaField>>(<SchemaField>[], (previousValue, e) {
       List<SchemaField> list;
@@ -34,6 +38,23 @@ class Schema extends Equatable {
   /// schema from json
   factory Schema.fromJson(Map<String, dynamic> json) => _$SchemaFromJson(json);
 
+  /// Used to test schema
+  @visibleForTesting
+  factory Schema.manual({
+    String className = '',
+    String classRef = '',
+    String description = '',
+    String graphName = '',
+    List<SchemaField> fields = const [],
+  }) =>
+      Schema(
+        className: className,
+        classRef: classRef,
+        description: description,
+        graphName: graphName,
+        fields: fields,
+      );
+
   /// schema to json
   Map<String, dynamic> toJson() => _$SchemaToJson(this);
 
@@ -51,6 +72,10 @@ class Schema extends Equatable {
 
   /// The fields of the schema, mapped by the property name
   late final Map<String, SchemaField> fields;
+
+  /// used to test [fields]
+  @visibleForTesting
+  late final List<SchemaField> fieldsForTesting;
 
   @override
   List<Object?> get props => [
