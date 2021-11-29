@@ -4,6 +4,10 @@ queries:
     class_ref: Example
     class_name: ExampleQuery
     description: This is an example query.
+    arguments:
+      exampleArgument:
+        type: String
+        default_value: "default_value"
     fields:
       string:
         property_ref: text

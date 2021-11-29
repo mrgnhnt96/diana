@@ -1,16 +1,15 @@
+import 'package:change_case/change_case.dart';
 import 'package:diana/src/domain/schema.dart';
 import 'package:diana/src/domain/schema_field.dart';
 import 'package:diana/src/domain/schema_settings.dart';
-import 'package:test/test.dart';
 
-import '../../../utils/schema_test_intf.dart';
+import 'util/schema_test_intf.dart';
 
-class BasicGraph extends SchemaTest {
-  BasicGraph() : super('test/src/domain/graph_input/basic.yaml');
+class BasicQuery extends SchemaTest {
+  BasicQuery() : super('$BasicQuery'.toSnakeCase());
 
   @override
   SchemaSettings get expected => SchemaSettings.set(
-        mutations: [],
         queries: [
           Schema(
             graphName: 'exampleQuery',
@@ -40,13 +39,4 @@ class BasicGraph extends SchemaTest {
 
   @override
   Future<SchemaSettings?> getSettings() => SchemaSettings.parse(path);
-
-  @override
-  void verify() {
-    test(path, () async {
-      final settings = await getSettings();
-
-      expect(settings, expected);
-    });
-  }
 }
