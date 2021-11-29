@@ -111,7 +111,7 @@ Schema _$SchemaFromJson(Map<String, dynamic> json) {
     argumentSettings = json['arguments'] as ArgumentSettings;
   } else {
     argumentSettings =
-        ArgumentSettings.fromJson(json['arguments'] as Map<String, dynamic>);
+        ArgumentSettings.fromJson(json['arguments'] as Map<String, dynamic>?);
   }
 
   return Schema(
