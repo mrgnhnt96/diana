@@ -1,3 +1,4 @@
+import 'package:diana/src/domain/argument_settings.dart';
 import 'package:diana/src/domain/schema_field.dart';
 import 'package:diana/src/exceptions/reserved_keyword.dart';
 import 'package:equatable/equatable.dart';
@@ -12,9 +13,11 @@ class Schema extends Equatable {
     required this.graphName,
     required this.classRef,
     required this.className,
+    ArgumentSettings? argumentSettings,
     this.description,
     required List<SchemaField> fields,
-  }) : fieldsForTesting = fields {
+  })  : fieldsForTesting = fields,
+        argumentSettings = argumentSettings ?? ArgumentSettings.empty() {
     ReservedWords.checkAll([graphName, className]);
 
     final flattenedFields =
@@ -46,6 +49,7 @@ class Schema extends Equatable {
     String description = '',
     String graphName = '',
     List<SchemaField> fields = const [],
+    ArgumentSettings? argumentSettings,
   }) =>
       Schema(
         className: className,
@@ -53,6 +57,7 @@ class Schema extends Equatable {
         description: description,
         graphName: graphName,
         fields: fields,
+        argumentSettings: argumentSettings ?? ArgumentSettings.empty(),
       );
 
   /// schema to json
@@ -73,6 +78,9 @@ class Schema extends Equatable {
   /// The fields of the schema, mapped by the property name
   late final Map<String, SchemaField> fields;
 
+  /// the arguments of the schema
+  final ArgumentSettings argumentSettings;
+
   /// used to test [fields]
   @visibleForTesting
   late final List<SchemaField> fieldsForTesting;
@@ -89,6 +97,7 @@ class Schema extends Equatable {
 
 Schema _$SchemaFromJson(Map<String, dynamic> json) {
   late final List<SchemaField> fields;
+  late final ArgumentSettings argumentSettings;
 
   if (json['fields'] is List<SchemaField>) {
     fields = json['fields'] as List<SchemaField>;
@@ -98,12 +107,20 @@ Schema _$SchemaFromJson(Map<String, dynamic> json) {
         .toList();
   }
 
+  if (json['arguments'] is ArgumentSettings) {
+    argumentSettings = json['arguments'] as ArgumentSettings;
+  } else {
+    argumentSettings =
+        ArgumentSettings.fromJson(json['arguments'] as Map<String, dynamic>);
+  }
+
   return Schema(
     graphName: json['graph_name'] as String,
     classRef: json['class_ref'] as String,
     className: json['class_name'] as String,
     description: json['description'] as String?,
     fields: fields,
+    argumentSettings: argumentSettings,
   );
 }
 
