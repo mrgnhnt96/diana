@@ -8,7 +8,7 @@ void main() {
   group('#canBePositional', () {
     group('should be true', () {
       test('when only 1 argument exists', () {
-        final settings = ArgumentSettings(arguments: [arg]);
+        final settings = ArgumentSettings([arg]);
 
         expect(settings.canBePositional, isTrue);
       });
@@ -16,13 +16,13 @@ void main() {
 
     group('should be false', () {
       test('when more than 1 argument', () {
-        final settings = ArgumentSettings(arguments: [arg, arg]);
+        final settings = ArgumentSettings([arg, arg]);
 
         expect(settings.canBePositional, isFalse);
       });
 
       test('when no arguments', () {
-        final settings = ArgumentSettings(arguments: []);
+        final settings = ArgumentSettings.empty();
 
         expect(settings.canBePositional, isFalse);
       });

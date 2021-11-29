@@ -8,7 +8,7 @@ void main() {
     group('should be required', () {
       test('when defaultValue is null', () {
         final arg = Argument(
-          name: 'arg',
+          'arg',
           type: 'String',
         );
 
@@ -17,7 +17,7 @@ void main() {
 
       test('when required is true', () {
         final arg = Argument(
-          name: 'arg',
+          'arg',
           type: 'String',
           isRequired: true,
         );
@@ -29,7 +29,7 @@ void main() {
     group('should not be required', () {
       test('when defaultValue is not null', () {
         final arg = Argument(
-          name: 'arg',
+          'arg',
           type: 'String',
           defaultValue: 'default',
         );
@@ -39,7 +39,7 @@ void main() {
 
       test('when required is false', () {
         final arg = Argument(
-          name: 'arg',
+          'arg',
           type: 'String',
           isRequired: false,
         );
@@ -49,7 +49,7 @@ void main() {
 
       test('when required is false and defaultValue is not null', () {
         final arg = Argument(
-          name: 'arg',
+          'arg',
           type: 'String',
           isRequired: false,
           defaultValue: 'default',
@@ -63,7 +63,7 @@ void main() {
         () {
       expect(
         () => Argument(
-          name: 'arg',
+          'arg',
           type: 'String',
           isRequired: true,
           defaultValue: 'default',
@@ -77,7 +77,7 @@ void main() {
     group('should be nullable', () {
       test('when type contains `?`', () {
         final arg = Argument(
-          name: 'arg',
+          'arg',
           type: 'String?',
         );
 
@@ -86,7 +86,7 @@ void main() {
 
       test('when required is false and defaultValue is null', () {
         final arg = Argument(
-          name: 'arg',
+          'arg',
           type: 'String',
           isRequired: false,
         );
@@ -96,7 +96,7 @@ void main() {
 
       test('when required is true and `?` is in type', () {
         final arg = Argument(
-          name: 'arg',
+          'arg',
           type: 'String?',
           isRequired: true,
         );
@@ -108,7 +108,7 @@ void main() {
     group('should not be nullable', () {
       test('when defaultValue is null and isRequired is false', () {
         final arg = Argument(
-          name: 'arg',
+          'arg',
           type: 'String',
         );
 
@@ -117,7 +117,7 @@ void main() {
 
       test('defaultValue is not null', () {
         final arg = Argument(
-          name: 'arg',
+          'arg',
           type: 'String',
           defaultValue: 'default',
         );
