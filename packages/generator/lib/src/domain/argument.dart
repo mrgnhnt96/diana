@@ -8,8 +8,8 @@ import 'package:meta/meta.dart';
 /// {@endtemplate}
 class Argument extends Equatable {
   /// {@macro argument}
-  Argument({
-    required this.name,
+  Argument(
+    this.name, {
     required String type,
     this.defaultValue,
     bool? isRequired,
@@ -66,7 +66,7 @@ class Argument extends Equatable {
     }
 
     return Argument(
-      name: name,
+      name,
       type: type,
       defaultValue: map['default_value'] as String?,
       isRequired: map['is_required'] as bool?,
