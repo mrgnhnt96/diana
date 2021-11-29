@@ -21,8 +21,8 @@ class SchemaSettings extends Equatable {
   /// for testing only, should not be used in production
   @visibleForTesting
   const SchemaSettings.set({
-    required this.queries,
-    required this.mutations,
+    this.queries = const [],
+    this.mutations = const [],
   });
 
   /// The queries defined
