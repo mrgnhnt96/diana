@@ -150,10 +150,11 @@ void main() {
     });
 
     group('should be nullable', () {
-      test('when type is  nullable', () {
+      test('when type is nullable', () {
         final arg = Argument.manual(
           name: 'arg',
           type: 'String?',
+          isNullable: true,
         );
 
         expect(arg.type, 'String?');
