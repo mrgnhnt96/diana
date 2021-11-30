@@ -15,7 +15,7 @@ class Schema extends Equatable {
     required this.className,
     ArgumentSettings? argumentSettings,
     this.description,
-    required List<SchemaField> fields,
+    List<SchemaField> fields = const [],
   })  : allFields = fields,
         argumentSettings = argumentSettings ?? ArgumentSettings.empty() {
     ReservedWords.checkAll([graphName, className]);
@@ -34,7 +34,7 @@ class Schema extends Equatable {
     });
 
     this.fields = {
-      for (final field in flattenedFields) field.propertyName: field
+      for (final field in flattenedFields) field.propertyRef: field
     };
   }
 
@@ -104,8 +104,9 @@ Schema _schemaFromJson(Map<String, dynamic> json) {
     classRef: json['class_ref'] as String,
     className: json['class_name'] as String,
     description: json['description'] as String?,
-    fields: SchemaField.fieldsFrom(json['fields'] as List),
-    argumentSettings: ArgumentSettings.from(json['arguments']),
+    fields: SchemaField.rootFields(json['fields'] as Map<String, dynamic>?),
+    argumentSettings:
+        ArgumentSettings.fromJson(json['arguments'] as Map<String, dynamic>?),
   );
 }
 
