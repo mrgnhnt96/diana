@@ -14,10 +14,10 @@ class SchemaField extends Equatable {
     ArgumentSettings? argumentSettings,
     List<SchemaField> fields = const [],
   })  : allFields = fields,
-        propertyName = propertyName ?? fieldName,
+        propertyRef = propertyName ?? fieldName,
         argumentSettings = argumentSettings ?? ArgumentSettings.empty(),
         fields = {
-          for (final field in fields) field.propertyName: field,
+          for (final field in fields) field.propertyRef: field,
         } {
     ReservedWords.checkAll([fieldName, propertyName]);
   }
@@ -34,7 +34,7 @@ class SchemaField extends Equatable {
 
   /// The name of the property that will be referenced from the class
   /// annotated with `@Diana`
-  final String propertyName;
+  final String propertyRef;
 
   /// Whether to extract fields from this field & remove it from the schema
   final bool flatten;
@@ -51,22 +51,31 @@ class SchemaField extends Equatable {
   @override
   List<Object?> get props => [
         fieldName,
-        propertyName,
+        propertyRef,
         flatten,
         fields,
         argumentSettings,
       ];
 
-  /// performs check if the [json] is type of [SchemaField]
-  static List<SchemaField> fieldsFrom(List json) {
-    late final List<SchemaField> fields;
+  /// Gets fields at root level
+  static List<SchemaField> rootFields(Map<String, dynamic>? json) {
+    final fields = <SchemaField>[];
 
-    if (json is List<SchemaField>) {
-      fields = json;
-    } else {
-      fields = json
-          .map((dynamic e) => SchemaField.fromJson(e as Map<String, dynamic>))
-          .toList();
+    if (json == null) {
+      return fields;
+    }
+
+    for (final entry in json.entries) {
+      final name = entry.key;
+      final rawField =
+          entry.value as Map<String, dynamic>? ?? <String, dynamic>{};
+
+      rawField.addAll(<String, dynamic>{
+        'field_name': name,
+        'property_ref': rawField['property_ref'] ?? name,
+      });
+
+      fields.add(_schemaFieldFromJson(rawField));
     }
 
     return fields;
@@ -76,9 +85,9 @@ class SchemaField extends Equatable {
 SchemaField _schemaFieldFromJson(Map<String, dynamic> json) {
   return SchemaField(
     json['field_name'] as String,
-    propertyName: json['property_name'] as String,
+    propertyName: json['property_ref'] as String,
     flatten: json['flatten'] as bool? ?? false,
-    fields: SchemaField.fieldsFrom(json['fields'] as List),
+    fields: SchemaField.rootFields(json['fields'] as Map<String, dynamic>?),
     argumentSettings: ArgumentSettings.from(json['arguments']),
   );
 }
@@ -86,7 +95,7 @@ SchemaField _schemaFieldFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _schemaFieldToJson(SchemaField instance) {
   return <String, dynamic>{
     'field_name': instance.fieldName,
-    'property_name': instance.propertyName,
+    'property_ref': instance.propertyRef,
     'flatten': instance.flatten,
     'fields': instance.fields.values.map((e) => e.toJson()).toList(),
     'arguments': instance.argumentSettings.toJson(),
