@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_constructors_over_static_methods
+
 import 'dart:collection';
 
 import 'package:diana/src/domain/argument.dart';
@@ -45,7 +47,10 @@ class ArgumentSettings extends Equatable with ListMixin<Argument> {
   final bool canBePositional;
 
   @override
-  List<Object?> get props => [arguments];
+  List<Object?> get props => [
+        arguments,
+        canBePositional,
+      ];
 
   /// converts this object to a json object
   Map<String, dynamic> toJson() {
@@ -67,4 +72,18 @@ class ArgumentSettings extends Equatable with ListMixin<Argument> {
 
   @override
   void operator []=(int index, Argument value) => arguments[index] = value;
+
+  /// performs check if the [json] is type [ArgumentSettings]
+  static ArgumentSettings from(dynamic json) {
+    late final ArgumentSettings argumentSettings;
+
+    if (json is ArgumentSettings) {
+      argumentSettings = json;
+    } else {
+      argumentSettings =
+          ArgumentSettings.fromJson(json as Map<String, dynamic>?);
+    }
+
+    return argumentSettings;
+  }
 }
