@@ -89,9 +89,6 @@ List<Schema> _getSchemas(YamlMap? rawSchemas) {
       rawSchema['class_name'] = name;
     }
 
-    rawSchema['fields'] =
-        _getFields(rawSchema['fields'] as Map<String, dynamic>);
-
     final schema = Schema.fromJson(rawSchema);
 
     schemas.add(schema);
@@ -114,28 +111,4 @@ Map<String, dynamic> _convertFromYamlMap(YamlMap? map) {
   }
 
   return result;
-}
-
-List<SchemaField> _getFields(Map<String, dynamic>? rawFields) {
-  final fields = <SchemaField>[];
-
-  if (rawFields == null) {
-    return fields;
-  }
-
-  for (final entry in rawFields.entries) {
-    final name = entry.key;
-    final rawField = entry.value as Map<String, dynamic>?;
-
-    final field = SchemaField(
-      name,
-      propertyName: rawField?['property_ref'] as String? ?? name,
-      flatten: rawField?['flatten'] as bool? ?? false,
-      fields: _getFields(rawField?['fields'] as Map<String, dynamic>?),
-    );
-
-    fields.add(field);
-  }
-
-  return fields;
 }
