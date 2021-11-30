@@ -72,18 +72,4 @@ class ArgumentSettings extends Equatable with ListMixin<Argument> {
 
   @override
   void operator []=(int index, Argument value) => arguments[index] = value;
-
-  /// performs check if the [json] is type [ArgumentSettings]
-  static ArgumentSettings from(dynamic json) {
-    late final ArgumentSettings argumentSettings;
-
-    if (json is ArgumentSettings) {
-      argumentSettings = json;
-    } else {
-      argumentSettings =
-          ArgumentSettings.fromJson(json as Map<String, dynamic>?);
-    }
-
-    return argumentSettings;
-  }
 }

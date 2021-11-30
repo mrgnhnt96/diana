@@ -88,7 +88,8 @@ SchemaField _schemaFieldFromJson(Map<String, dynamic> json) {
     propertyName: json['property_ref'] as String,
     flatten: json['flatten'] as bool? ?? false,
     fields: SchemaField.rootFields(json['fields'] as Map<String, dynamic>?),
-    argumentSettings: ArgumentSettings.from(json['arguments']),
+    argumentSettings:
+        ArgumentSettings.fromJson(json['arguments'] as Map<String, dynamic>?),
   );
 }
 
