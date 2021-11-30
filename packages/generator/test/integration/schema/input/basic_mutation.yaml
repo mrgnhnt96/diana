@@ -17,6 +17,10 @@ mutations:
       date:
       subfields:
         flatten: true
+        arguments:
+          exampleArgument:
+            type: String
+            default_value: "default_value"
         fields:
           list:
           map:

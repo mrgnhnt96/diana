@@ -1,9 +1,9 @@
 queries:
   ExampleQuery:
     graph_name: exampleQuery
+    description: This is an example query.
     class_ref: Example
     class_name: ExampleQuery
-    description: This is an example query.
     arguments:
       exampleArgument:
         type: String
@@ -17,6 +17,10 @@ queries:
       date:
       subfields:
         flatten: true
+        arguments:
+          exampleArgument:
+            type: String
+            default_value: "default_value"
         fields:
           list:
           map:

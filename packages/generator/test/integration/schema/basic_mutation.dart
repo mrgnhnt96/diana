@@ -35,6 +35,14 @@ class BasicMutation extends SchemaTest {
               SchemaField(
                 'subfields',
                 flatten: true,
+                argumentSettings: ArgumentSettings([
+                  Argument(
+                    'exampleArgument',
+                    type: 'String',
+                    defaultValue: '"default_value"',
+                    isRequired: false,
+                  )
+                ]),
                 fields: [
                   SchemaField('list'),
                   SchemaField('map'),
