@@ -9,14 +9,14 @@ void main() {
     test('should return #fieldName if null', () {
       final field = SchemaField(defaultName);
 
-      expect(field.propertyName, defaultName);
+      expect(field.propertyRef, defaultName);
     });
 
     test('should return propertyName arg', () {
       const propertyName = 'propertyName';
       final field = SchemaField(defaultName, propertyName: propertyName);
 
-      expect(field.propertyName, propertyName);
+      expect(field.propertyRef, propertyName);
     });
   });
 
