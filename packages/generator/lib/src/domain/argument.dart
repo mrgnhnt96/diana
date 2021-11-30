@@ -25,7 +25,7 @@ class Argument extends Equatable {
       isNullable = false;
     }
 
-    if (_defaultValue == null && isReq == false) {
+    if (_defaultValue == null && isRequired == false) {
       isReq = false;
       isNullable = true;
     }
