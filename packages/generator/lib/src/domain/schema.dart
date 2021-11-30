@@ -16,7 +16,7 @@ class Schema extends Equatable {
     ArgumentSettings? argumentSettings,
     this.description,
     required List<SchemaField> fields,
-  })  : fieldsForTesting = fields,
+  })  : allFields = fields,
         argumentSettings = argumentSettings ?? ArgumentSettings.empty() {
     ReservedWords.checkAll([graphName, className]);
 
@@ -39,7 +39,7 @@ class Schema extends Equatable {
   }
 
   /// schema from json
-  factory Schema.fromJson(Map<String, dynamic> json) => _$SchemaFromJson(json);
+  factory Schema.fromJson(Map<String, dynamic> json) => _schemaFromJson(json);
 
   /// Used to test schema
   @visibleForTesting
@@ -61,7 +61,7 @@ class Schema extends Equatable {
       );
 
   /// schema to json
-  Map<String, dynamic> toJson() => _$SchemaToJson(this);
+  Map<String, dynamic> toJson() => _schemaToJson(this);
 
   /// The name of the schema that will be generated
   final String graphName;
@@ -76,14 +76,15 @@ class Schema extends Equatable {
   final String? description;
 
   /// The fields of the schema, mapped by the property name
+  ///
+  /// Fields are flattened
   late final Map<String, SchemaField> fields;
 
   /// the arguments of the schema
   final ArgumentSettings argumentSettings;
 
-  /// used to test [fields]
-  @visibleForTesting
-  late final List<SchemaField> fieldsForTesting;
+  /// All fields
+  late final List<SchemaField> allFields;
 
   @override
   List<Object?> get props => [
@@ -92,44 +93,30 @@ class Schema extends Equatable {
         className,
         description,
         fields,
+        argumentSettings,
+        allFields,
       ];
 }
 
-Schema _$SchemaFromJson(Map<String, dynamic> json) {
-  late final List<SchemaField> fields;
-  late final ArgumentSettings argumentSettings;
-
-  if (json['fields'] is List<SchemaField>) {
-    fields = json['fields'] as List<SchemaField>;
-  } else {
-    fields = (json['fields'] as List<Map<String, dynamic>>)
-        .map((e) => SchemaField.fromJson(e))
-        .toList();
-  }
-
-  if (json['arguments'] is ArgumentSettings) {
-    argumentSettings = json['arguments'] as ArgumentSettings;
-  } else {
-    argumentSettings =
-        ArgumentSettings.fromJson(json['arguments'] as Map<String, dynamic>?);
-  }
-
+Schema _schemaFromJson(Map<String, dynamic> json) {
   return Schema(
     graphName: json['graph_name'] as String,
     classRef: json['class_ref'] as String,
     className: json['class_name'] as String,
     description: json['description'] as String?,
-    fields: fields,
-    argumentSettings: argumentSettings,
+    fields: SchemaField.fieldsFrom(json['fields'] as List),
+    argumentSettings: ArgumentSettings.from(json['arguments']),
   );
 }
 
-Map<String, dynamic> _$SchemaToJson(Schema instance) {
+Map<String, dynamic> _schemaToJson(Schema instance) {
   return <String, dynamic>{
     'name': instance.graphName,
     'class_ref': instance.classRef,
     'class_name': instance.className,
     'description': instance.description,
+    'all_fields': instance.allFields,
+    'arguments': instance.argumentSettings,
     'fields': instance.fields.values.map((e) => e.toJson()).toList(),
   };
 }

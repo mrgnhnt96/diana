@@ -14,7 +14,7 @@ void main() {
         fields: fields,
       );
 
-      expect(schema.fieldsForTesting, fields);
+      expect(schema.allFields, fields);
     });
 
     test('should return fields mapped by propertyName', () {

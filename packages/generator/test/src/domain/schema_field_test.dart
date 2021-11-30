@@ -1,4 +1,3 @@
-import 'package:analyzer/dart/ast/ast.dart';
 import 'package:diana/src/domain/schema_field.dart';
 import 'package:diana/src/exceptions/reserved_keyword.dart';
 import 'package:test/test.dart';
@@ -32,7 +31,7 @@ void main() {
       final fields = [SchemaField(defaultName)];
       final field = SchemaField(defaultName, fields: fields);
 
-      expect(field.fieldsForTesting, fields);
+      expect(field.allFields, fields);
     });
 
     test('should return mapped fields by #propertyName', () {
