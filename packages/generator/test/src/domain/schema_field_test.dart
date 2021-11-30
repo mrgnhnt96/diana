@@ -68,36 +68,4 @@ void main() {
       }
     });
   });
-
-  group('#fromJson', () {
-    test('fields type is list of $SchemaField', () {
-      final json = {
-        'field_name': 'fieldName',
-        'property_name': 'fieldName',
-        'fields': [SchemaField(defaultName)],
-      };
-
-      final field = SchemaField.fromJson(json);
-
-      expect(field, isA<SchemaField>());
-    });
-
-    test('fields type is list of maps', () {
-      final json = {
-        'field_name': 'fieldName',
-        'property_name': 'fieldName',
-        'fields': [
-          {
-            'field_name': 'fieldName',
-            'property_name': 'fieldName',
-            'fields': <dynamic>[],
-          },
-        ],
-      };
-
-      final field = SchemaField.fromJson(json);
-
-      expect(field, isA<SchemaField>());
-    });
-  });
 }
