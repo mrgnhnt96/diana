@@ -9,37 +9,41 @@ import 'package:meta/meta.dart';
 class Argument extends Equatable {
   /// {@macro argument}
   Argument(
-    this.name, {
+    String name, {
     required String type,
-    this.defaultValue,
+    String? defaultValue,
     bool? isRequired,
-  }) {
-    var _isNullable = false, _isRequired = isRequired ?? false;
+  }) : name = name.trim() {
+    type = type.trim();
+    _defaultValue = defaultValue?.trim().replaceAll('"', '');
 
-    if (defaultValue == null) {
-      _isRequired = true;
+    var isNullable = false, isReq = isRequired ?? false;
+
+    if (_defaultValue == null) {
+      isReq = true;
     } else {
-      _isNullable = false;
+      isNullable = false;
     }
 
-    if (defaultValue == null && isRequired == false) {
-      _isRequired = false;
-      _isNullable = true;
+    if (_defaultValue == null && isReq == false) {
+      isReq = false;
+      isNullable = true;
     }
 
-    if ((isRequired ?? false) && defaultValue == null) {
-      _isRequired = true;
+    if ((isRequired ?? false) && _defaultValue == null) {
+      isReq = true;
     }
 
     if (type.contains('?')) {
-      _isNullable = true;
+      isNullable = true;
     }
 
-    this.isRequired = _isRequired;
-    isNullable = _isNullable;
+    _isRequired = isReq;
+    _isNullable = isNullable;
     _type = type;
+    _isValueTypeString = type.startsWith('String');
 
-    if (this.isRequired && defaultValue != null) {
+    if (_isRequired && _defaultValue != null) {
       throw ArgumentError(
         'Argument $name is required but has a default value.',
       );
@@ -51,10 +55,15 @@ class Argument extends Equatable {
   Argument.manual({
     this.name = '',
     String type = '',
-    this.defaultValue,
-    this.isRequired = false,
-    this.isNullable = false,
-  }) : _type = type;
+    String? defaultValue,
+    bool isRequired = false,
+    bool isNullable = false,
+    bool isValueTypeString = false,
+  })  : _defaultValue = defaultValue,
+        _type = type,
+        _isRequired = isRequired,
+        _isNullable = isNullable,
+        _isValueTypeString = isValueTypeString;
 
   /// Creates an instance of [Argument] from a JSON [Map].
   factory Argument.fromJson(Map<String, dynamic> map) {
@@ -76,23 +85,39 @@ class Argument extends Equatable {
   /// the name of the argument
   final String name;
 
-  /// the type of the argument
+  late final String? _defaultValue;
   late final String _type;
+  late final bool _isValueTypeString;
+  late final bool _isRequired;
+  late final bool _isNullable;
 
   /// the default value of the argument
-  final String? defaultValue;
+  String? get defaultValue {
+    if (_defaultValue == null) {
+      return null;
+    }
+
+    if (_isValueTypeString) {
+      return '"$_defaultValue"';
+    }
+
+    return _defaultValue;
+  }
+
+  /// if the [type] is of type String
+  bool get isValueTypeString => _isValueTypeString;
 
   /// whether the argument is required
-  late final bool isRequired;
+  bool get isRequired => _isRequired;
 
   /// whether the argument is nullable
-  late final bool isNullable;
+  bool get isNullable => _isNullable;
 
   /// the type of the argument
   String get type {
     final type = _type.replaceAll('?', '');
 
-    if (isNullable) {
+    if (_isNullable) {
       return '$type?';
     }
 
@@ -102,8 +127,11 @@ class Argument extends Equatable {
   @override
   List<Object?> get props => [
         name,
-        _type,
+        type,
         defaultValue,
+        isRequired,
+        isNullable,
+        isValueTypeString,
       ];
 
   /// Creates a JSON [Map] from this object.
@@ -114,6 +142,7 @@ class Argument extends Equatable {
       'defaultValue': defaultValue,
       'isRequired': isRequired,
       'isNullable': isNullable,
+      'isValueTypeString': isValueTypeString,
     };
   }
 }
