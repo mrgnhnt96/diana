@@ -3,22 +3,3 @@ queries:
     graph_name: exampleQuery
     class_ref: Example
     description: This is an example query.
-    arguments:
-      exampleArgument:
-        type: String
-        default_value: "default_value"
-    fields:
-      string:
-        property_ref: text
-      whole:
-      decimal:
-      flag:
-      date:
-      subfields:
-        flatten: true
-        fields:
-          list:
-          map:
-          set:
-          child:
-            property_ref: example
